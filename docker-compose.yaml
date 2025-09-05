@@ -1,4 +1,22 @@
 services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: epicly_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+
   web:
     build: .
     command: python main.py
@@ -8,3 +26,11 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    stop_grace_period: 10s
+    stop_signal: SIGTERM
+
+volumes:
+  postgres_data:
