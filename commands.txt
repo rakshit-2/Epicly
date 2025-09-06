@@ -1,0 +1,11 @@
+## run buildd
+docker-compose up --build
+
+## DB run
+docker-compose up -d db
+
+## generated fake data with cline and ran the seed script
+docker-compose run --rm web python seed_data.py
+
+## Did a complete dry-run from API/Docs
+✅

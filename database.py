@@ -76,3 +76,4 @@ if __name__ == "__main__":
         else:
             print("xoxo -> db failed")
     else:
+        print("xoxo -> test connection failed")

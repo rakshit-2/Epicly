@@ -5,8 +5,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from settings import settings
+from api import router as api_router
 from contextlib import asynccontextmanager
 from database import test_connection, create_tables, engine
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,39 +39,7 @@ def signal_handler(signum, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
-@app.get("/")
-async def root():
-    return {
-        "status": "success",
-        "message": f"Epicly Event Booking System - {settings.ENVIRONMENT.title()}",
-        "environment": settings.ENVIRONMENT,
-        "version": "1.0.0",
-        "debug": settings.DEBUG
-    }
-
-@app.get("/config")
-async def get_config():
-    if settings.is_production:
-        return {"error": "Configuration endpoint not available in production"}
-    
-    return {
-        "environment": settings.ENVIRONMENT,
-        "debug": settings.DEBUG,
-        "database": {
-            "host": settings.DB_HOST,
-            "port": settings.DB_PORT,
-            "name": settings.DB_NAME,
-            "user": settings.DB_USER
-        },
-        "server": {
-            "host": settings.SERVER_HOST,
-            "port": settings.SERVER_PORT
-        },
-        "log_level": settings.LOG_LEVEL
-    }
-
-
-
+app.include_router(api_router) # APis from here
 
 if __name__ == "__main__":
     import uvicorn
