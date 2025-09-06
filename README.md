@@ -74,6 +74,8 @@ A comprehensive event booking system built with FastAPI and PostgreSQL, featurin
 
 ### Database Schema
 
+<img width="1214" height="924" alt="Untitled" src="https://github.com/user-attachments/assets/3daad293-8bc5-4cb1-8e38-6b97648955a0" />
+
 The system uses a well-structured relational database with the following key entities:
 
 - **Users**: User registration and authentication
